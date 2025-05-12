@@ -2,6 +2,8 @@
 May 2025
 Luke McCartin - Postdoc - Lehigh University in the Herrera Lab
 
+**Text in bold indicates things that you should do on your computer.**
+
 # Background
 ## DNA Metabarcoding
 
@@ -12,3 +14,23 @@ During DNA metabarcoding library preparation, PCR primers can be used that ampli
 In a ‘two-step’ metabarcoding library preparation, first the barcode of interest is amplified with PCR using the primers that complement sequences that flank the DNA barcode. The PCR primers also include an overhanging sequence that is referred to as a linking adapter in this tutorial. In the second step, PCR primers that contain the linking adapter sequence, a unique index for each sample (sometimes called a tag), and the sequencing adapters are incorporated into the first PCR product using another round of PCR (Bohmann et al., 2022). These second PCR products undergo size selection to remove unwanted sequences that are shorter or longer than the barcode of interest. Finally, the PCR products from all samples are pooled together (multiplexed) and sequenced, most commonly on an Illumina platform but also on PacBio and Oxford Nanopore platforms. After sequencing, the sequencing reads are reassigned to the samples they originated from based on their unique combination of indices in a process referred to as demultiplexing. This step is typically conducted by the sequencing facility using software dedicated to the sequencing instrument.
 
 Once you receive your metabarcoding data, bioinformatic processing typically first involves trimming primer and adapter sequences from the reads. In the case of Nanopore data, you’ll also need to reorient your sequencing reads so that they are in the 5’ to 3’ direction in the forward direction (i.e. with the sequence complementary to your forward primer at the beginning of the read). After this, the data are filtered for quality and then clustered and/or error-corrected infer ‘real’ biological sequences from the data that do not contain sequencing errors. The typical outputs of these processes are a file with the biologically accurate barcode sequences, a table with the taxonomic identity of these barcodes, and a table of their frequencies in each sample. Once you have generated these outputs, you can start to ask questions about the composition of organisms in the samples based on their distributions across the samples. Typically, metabarcoding is used to compare the composition of organisms across sampling sites, species, and environmental factors. There are a number of statistical tests developed specifically for metabarcoding data that complement these analyses.
+
+## The Data
+
+In this tutorial, we are focused on analyzing data generated from coral samples. DNA was isolated from these corals at the Smithsonian National Museum of Natural History. At Lehigh, you amplified a portion of 18S with using the UNonMet-PCR primer set, which is an “easy, inexpensive, and near-universal method for the study of animal-associated microeukaryotes” (Campo et al. 2019). The primer sequences are 574F: TTTCTGTTGGTGCTGATATTGCCGGTAAYTCCAGCTCYV and Reverse: ACTTGCCTGTCGCTCTATCTTCCTTTAARTTTCASYCTTGCG. The sequences are written in the 5’ to 3’ directions. The adapter sequences that are included for compatibility with library prep for Oxford Nanopore Sequencing are underlined. At Lehigh, the first PCR amplification and bead cleanup of the PCR products were performed.
+
+Clean PCR products were shipped to the University of Connecticut Microbial Analysis, Resources and Services (MARS) facility for further library preparation following the PCR barcoding with native barcodes, ligation sequencing protocol (SQK-LSK114). Libraries were sequenced on a Minion using a FLO-MIN114 flow cell that has R10 chemistry. Basecalling was conducted using MinKNOW (v. 25.03.7), Bream (v. 8.4.4), Configuration (6.4.10), Dorado (7.8.3), and MinKNOW Core (6.4.8) and with super-accurate basecalling at 400 bps. From the facility, we received two demultiplexed .fastq files for each library. One file contains data from an initial run to “improve the balance for the "real" run”. Since some of the samples produced multiple thousands of reads, these data are useful too. The second file contains the rest of the data.
+
+# Software Installation
+
+Initial bioinformatic processing of these data will largely depend on [the Natrix2 pipeline](https://github.com/dbeisser/Natrix2) (Deep et al., 2023). This is one of the few developed and well documented strategies for analyzing Nanopore metabarcoding data. Typical workflows for Illumina data (e.g. [DADA2](https://benjjneb.github.io/dada2/)) are not appropriate due to the fact that Nanopore sequencing still has a higher error rate.
+
+Installing Natrix2 on your computer requires installing a couple of other pieces of software beforehand. 
+
+The first is [Docker](https://www.docker.com/). Docker allows programmers to run programs within so-called "containers" that contain all of the other software they depend on (dependencies). It also allows for programs to be run across different operating systems (e.g. Mac OSX to Linux). 
+
+**Download Docker Desktop and install it on your computer.**
+
+To download the program files to run Natrix2, you'll have to "clone" the Natrix2 repository from GitHub. To do so, you'll have to install [git](https://github.com/git-guides/install-git). The easiest way to do this is to install [GitHub Desktop](https://github.com/apps/desktop). 
+
+**Download GitHub Desktop and install it on your computer**.
