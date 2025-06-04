@@ -140,11 +140,11 @@ UNonMet_574F,,,TTTCTGTTGGTGCTGATATTGCCGGTAAYTCCAGCTCYV,,,ACTTGCCTGTCGCTCTATCTTCC
 
 ***Edit your primer table in VSCode and save it.***
 
-Every Natrix2 run requires a configuration file that is customized to our dataset and the individual data analysis parameters that you'd like to implement. Most of the work involved with using Natrix2 (beyond installing the software...) involves modifying this configuration file to suit your needs. The developers of Natrix2 provide us with several configuration files in the Natrix2 directory for data from various sequencing platforms that we can use as a starting point. The file that we'll use as a tempplate is named "Nanopore.yaml".
+Every Natrix2 run requires a configuration file that is customized to our dataset and the individual data analysis parameters that you'd like to implement. Most of the work involved with using Natrix2 (beyond installing the software...) involves modifying this configuration file to suit your needs. The developers of Natrix2 provide us with several configuration files in the Natrix2 directory for data from various sequencing platforms that we can use as a starting point. The file that we'll use as a tempplate is named "nanopore_vsearch.yaml".
 
 To run our analysis, we'll make a copy of this file and edit it for our project.
 
-***Copy the nanopore.yaml file and rename it with the analysis and date.***
+***Copy the nanopore_vsearch.yaml file and rename it with the analysis and date.***
 
 ```zsh
 
@@ -152,7 +152,7 @@ cp ./nanopore_vsearch.yaml ./nanopore_18S_test_20250604.yaml # something like th
 
 ```
 
-There are several lines in the Nanopore.yaml file that we need to edit for our dataset and to suit your individual data analysis.
+There are several lines in the nanopore_vsearch.yaml file that we need to edit for our dataset and to suit your individual data analysis.
 
 ***Open your configuration file in VSCode to edit it.***
 
