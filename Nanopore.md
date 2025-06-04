@@ -2,7 +2,7 @@
 
 Luke McCartin - Postdoc - Lehigh University in the Herrera Lab
 
-**Text in bold indicates things that you should do on your computer.**
+***Text in bold italics indicates things that you should do on your computer.***
 
 # Background
 ## DNA Metabarcoding
@@ -23,7 +23,7 @@ Clean PCR products were shipped to the University of Connecticut Microbial Analy
 
 # Processing Nanopore Metabarcoding Data with Natrix2
 
-To analyze the data we received from the sequencing facility, we are going to use a pipeline called Natrix2 (Deep et al., 2023)[https://mbmg.pensoft.net/article/109389/]. Natrix2 will perform all of the typical steps for analyzing metabarcoding data, and can be specifically configured for Nanopore sequencing data. It relies on a number of other tools that are developed for metabarcoding analysis and the analysis of Nanopore sequencing data. Natrix2 is hosted on a (GitHub Page)[https://github.com/dbeisser/Natrix2]. This should serve as your main resource for using and troubleshooting the pipeline on your computer.
+To analyze the data we received from the sequencing facility, we are going to use a pipeline called Natrix2 [Deep et al., 2023](https://mbmg.pensoft.net/article/109389/). Natrix2 will perform all of the typical steps for analyzing metabarcoding data, and can be specifically configured for Nanopore sequencing data. It relies on a number of other tools that are developed for metabarcoding analysis and the analysis of Nanopore sequencing data. Natrix2 is hosted on a [GitHub Page](https://github.com/dbeisser/Natrix2). This should serve as your main resource for using and troubleshooting the pipeline on your computer.
 
 ## Installing Docker, git, and Conda
 
@@ -33,19 +33,19 @@ Docker is a program that allows programmers to share "containers" that include n
 
 The easiest way to run Natrix2 using Docker is to install Docker Desktop onto your computer.
 
-**Install Docker Desktop for your computer from the following (website)[https://www.docker.com/products/docker-desktop/]**
+***Install Docker Desktop for your computer from the following [website](https://www.docker.com/products/docker-desktop/)***
 
 Now that we have Docker installed and running, we'll need to download the scripts to run Natrix2 from its GitHub page. "Cloning" a github repository onto your own computer is easy, but first you need to also install git on your computer. The easiest way to do this is to install GitHub Desktop. 
 
 GitHub Desktop is an especially useful program because it allows you to work directly with your own GitHub repositories directly on your computer via integration with VSCode. I highly recommend you use it and make a GitHub account!
 
-**Install GitHub Desktop on your computer from the following (website)[https://docs.github.com/en/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop]**
+***Install GitHub Desktop on your computer from the following [website](https://docs.github.com/en/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop)***
 
 Once you have GitHub Desktop installed, it should prompt you to make a GitHub account if you open it. I recommend that you make a GitHub account using your personal email (one that outlasts your time at Lehigh). If you plan to work on coding projects in the future, and especially if you plan to share your code with others, GitHub is a fantastic resource.
 
 Now that we have git installed on our computer, we can clone the Natrix2 GitHub repository that contains the code we need to run the program. First, we'll need to open a terminal in VSCode, then we'll navigate to a directory where we want to place it, and clone the GitHub repository.
 
-**Open a terminal in VSCode, navigate to the directory where you want to copy Natrix2, and clone the GitHub repository**
+***Open a terminal in VSCode, navigate to the directory where you want to copy Natrix2, and clone the GitHub repository***
 
 Here, I'll just clone Natrix2 to my desktop as an example. Wherever you place the Natrix2 repository on your computer, that is where you'll work on your analysis of the Nanopore sequencing data.
 
@@ -61,13 +61,13 @@ Lastly, we need to install "conda" on our computer. Conda is a software manageme
 
 To install conda, we'll install "miniconda", which is a sized down version of conda that will do everything we need to do.
 
-**Install miniconda using the instructions for macOS on its (website)[https://www.anaconda.com/docs/getting-started/miniconda/install].**
+***Install miniconda using the instructions for macOS on its [website](https://www.anaconda.com/docs/getting-started/miniconda/install).***
 
 ## Running Natrix 2
 
 Great. Now we are set up to run Natrix2 on our computer. The first step is to create a conda environment for Natrix2 to run in. The developers have included a .yaml configuration file in the Natrix2 repository that makes this easy to accomplish with a simple line of code.
 
-**Navigate to the Natrix directory and create the natrix conda environment.**
+***Navigate to the Natrix directory and create the natrix conda environment.***
 
 ```zsh
 
@@ -79,11 +79,11 @@ conda env create --file=natrix.yaml
 
 We're now ready to download the Docker container that is set up to run Natrix2. We'll start Docker on your computer to get the Docker "engine" running. You can also make a Docker account if you'd like, though you can skip this step and still use the program.
 
-**Open Docker Desktop by double clicking to start the Docker engine.**
+***Open Docker Desktop by double clicking to start the Docker engine.***
 
-Opening Docker Desktop will start the Docker engine. In the lower left hand corner of the Docker window, you should see that it will say "engine running" in green. Once the engine is running, we can pull the Natrix2 container as described in the Natrix2 tutorial on GitHub in the section (Running Natrix with docker or docker-compose)[https://github.com/dbeisser/Natrix2?tab=readme-ov-file#running-natrix-with-docker-or-docker-compose].
+Opening Docker Desktop will start the Docker engine. In the lower left hand corner of the Docker window, you should see that it will say "engine running" in green. Once the engine is running, we can pull the Natrix2 container as described in the Natrix2 tutorial on GitHub in the section Running Natrix with docker or docker-compose: https://github.com/dbeisser/Natrix2?tab=readme-ov-file#running-natrix-with-docker-or-docker-compose.
 
-**Pull the Natrix2 container to create it in Docker**
+***Pull the Natrix2 container to create it in Docker.***
 
 ```zsh
 
@@ -93,7 +93,7 @@ docker pull dbeisser/natrix2:latest
 
 We are close to being able to run Natrix2 using Docker on our computer. Running Natrix2 using docker requires a very specific set of directories that include your data and configuration files for the run as described in the GitHub tutorial.  To run Natrix2, we'll replicate this directory structure in the main Natrix2 folder exactly as it is described in the GitHub tutorial.
 
-**Navigate to the Natrix folder and create the necessary directories that will be populated with our data.**
+***Navigate to the Natrix folder and create the necessary directories that will be populated with our data.***
 
 ```zsh
 
@@ -109,13 +109,13 @@ mkdir database
 
 Next, we'll populate these folders with our sequencing data and configuration files for our Natrix2 analysis.
 
-To run Natrix2, our sequencing data has to be formatted in a certain manner. Specifically, each file must be renamed SAMPLEID_A_R1/R2.fastq.gz. I renamed the data, combined data from different files that corresponded to the same samples, "gzipped" the data to compress them. The data are uploaded to our Google drive and are linked (here)[https://drive.google.com/drive/folders/14Sl1tFhT_nV_g9Ta9UyA7HyJek7f0CbB?usp=drive_link] in the 'combined_renamed' folder.
+To run Natrix2, our sequencing data has to be formatted in a certain manner. Specifically, each file must be renamed SAMPLEID_A_R1/R2.fastq.gz. I renamed the data, combined data from different files that corresponded to the same samples, "gzipped" the data to compress them. The data are uploaded to our Google drive and are linked [here](https://drive.google.com/drive/folders/14Sl1tFhT_nV_g9Ta9UyA7HyJek7f0CbB?usp=drive_link) in the 'combined_renamed' folder.
 
-**Download the combined and renamed data files (.fastq.gz) from Google Drive and move it to your /input/samples directory.**
+***Download the combined and renamed data files (.fastq.gz) from Google Drive and move it to your /input/samples directory.***
 
 The other data that we need to run Natrix2 is a simple comma-separated values file that contains our primer sequences used to generate the libraries. If you inspect the "Nanopore.csv" file in the /primer_table/ directory, you can see how this file should be formatted.
 
-**Make a primer table for our 18S primers by first copying this table as a template into the "/input" directory.**
+***Make a primer table for our 18S primers by first copying this table as a template into the "/input" directory.***
 
 ```zsh 
 
@@ -138,13 +138,13 @@ Our primer table should look like this:
 Probe,poly_N,Barcode_forward,specific_forward_primer,poly_N_rev,Barcode_reverse,specific_reverse_primer
 UNonMet_574F,,,TTTCTGTTGGTGCTGATATTGCCGGTAAYTCCAGCTCYV,,,ACTTGCCTGTCGCTCTATCTTCCTTTAARTTTCASYCTTGCG
 
-**Edit your primer table in VSCode and save it.**
+***Edit your primer table in VSCode and save it.***
 
 Every Natrix2 run requires a configuration file that is customized to our dataset and the individual data analysis parameters that you'd like to implement. Most of the work involved with using Natrix2 (beyond installing the software...) involves modifying this configuration file to suit your needs. The developers of Natrix2 provide us with several configuration files in the Natrix2 directory for data from various sequencing platforms that we can use as a starting point. The file that we'll use as a tempplate is named "Nanopore.yaml".
 
 To run our analysis, we'll make a copy of this file and edit it for our project.
 
-**Copy the nanopore.yaml file and rename it with the analysis and date.**
+***Copy the nanopore.yaml file and rename it with the analysis and date.***
 
 ```zsh
 
@@ -154,7 +154,7 @@ cp ./Nanopore.yaml ./nanopore_18S_test_20250327.yaml # something like this would
 
 There are several lines in the Nanopore.yaml file that we need to edit for our dataset and to suit your individual data analysis.
 
-**Open your configuration file in VSCode to edit it.**
+***Open your configuration file in VSCode to edit it.***
 
 The first section we'll take a look at are in the "general:" section. Lines 3-8 pertain to the input and output paths for the analysis and the computing power that can be allocated to Natrix2. These have to be carefully edited for our directory structure and to match the capabilities of your computer.
 
@@ -183,7 +183,7 @@ There are some other changes to the configuration file that we should make or in
 
 Take a look at the "nanopore" section. These parameters can be adjusted to quality filter/trim your data. the most important of these are minlen and maxlen, which remove sequences outside of our expected length range.
 
-**Set these parameters in "nanopore" carefully and think about any adjustments you'd like to make to suit your dataset! Pay specific attention to quality_file, min_length, and max_length parameters.**
+***Set these parameters in "nanopore" carefully and think about any adjustments you'd like to make to suit your dataset! Pay specific attention to quality_file, min_length, and max_length parameters.***
 
 ```yaml
 
@@ -201,7 +201,7 @@ nanopore:
 
 Two of the biggest decisions to make when using this pipeline are how to "cluster" similar sequences to represent species and how to determine the identity of those clustered sequences. With Nanopore data, we'll use the clustering algorith vsearch. The "vsearch_id" percent identity is a very important parameter that you may want to edit. It would be worth doing some research to determine what percent identities have been used in other Nanopore studies that use Natrix2.
 
-**Adjust lines 65 and 66 to reflect your clustering parameters.**
+***Adjust lines 65 and 66 to reflect your clustering parameters.***
 
 ```yaml
 
@@ -212,7 +212,7 @@ vsearch_id: 0.97 #Percent identity for vsearch OTU clustering (1 = 100%).
 
 To classify the taxonomy of the sequences, we're going to simply use BLAST to compare your clustered sequences to the SILVA database. We'll use SILVA, rather than the NCBI database, because SILVA is a curated database specifically for ribosomal DNA sequences like 18S. BLAST is a straightforward and intuitive way to identify sequences, so we'll use that for our first analysis of Nanopore data.
 
-**Adjust taxonomic classification settings accordingly.**
+***Adjust taxonomic classification settings accordingly.***
 
 ```yaml
 
@@ -247,7 +247,7 @@ blast:
 
 The configuration file should be set!
 
-**Once you've created this file, move it to the "input" folder**
+***Once you've created this file, move it to the "input" folder***
 
 Now, our data, configuration file, and primer file should be ready to go in the appropriate folders. We are ready to run Natrix2 using Docker.
 
