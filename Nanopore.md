@@ -148,7 +148,7 @@ To run our analysis, we'll make a copy of this file and edit it for our project.
 
 ```zsh
 
-cp ./Nanopore.yaml ./nanopore_18S_test_20250327.yaml # something like this would suffice
+cp ./nanopore_vsearch.yaml ./nanopore_18S_test_20250604.yaml # something like this would suffice
 
 ```
 
