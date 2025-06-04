@@ -167,7 +167,7 @@ If you've named your primer table in the same manner as I have, the first three 
 general:
         filename: input/samples # The path / filename of the project folder, primertable (.csv) and configfile (.yaml). If the raw data folder is not in the root directory of Natrix, please add the path relative to the root directory (e.g. input/example_data)
         output_dir: output/results # Path to custom output directory / relative to the root directory of natrix. Do not use a dash in the folder name.
-        primertable: input/18S_primer.csv # Path to the primertable. If the primertable is not in the root directory of Natrix, please add the path relative to the root directory (e.g. input/example_data.yaml)
+        primertable: input/18S_nanopore.csv # Path to the primertable. If the primertable is not in the root directory of Natrix, please add the path relative to the root directory (e.g. input/example_data.yaml)
         units: units.tsv # Path to the sequencing unit sheet. (name will be concatenated with output_dir)
         cores: 6 # Amount of cores available for the workflow.
         memory: 8000 # Available RAM in Mb.
