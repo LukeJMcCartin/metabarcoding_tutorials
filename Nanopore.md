@@ -109,7 +109,7 @@ mkdir database
 
 Next, we'll populate these folders with our sequencing data and configuration files for our Natrix2 analysis.
 
-To run Natrix2, our sequencing data has to be formatted in a certain manner. Specifically, each file must be renamed SAMPLEID_A_R1/R2.fastq.gz. I renamed the data, combined data from different files that corresponded to the same samples, "gzipped" the data to compress them. The data are uploaded to our Google drive and are linked [here](https://drive.google.com/drive/folders/14Sl1tFhT_nV_g9Ta9UyA7HyJek7f0CbB?usp=drive_link) in the 'combined_renamed' folder.
+To run Natrix2, our sequencing data has to be formatted in a certain manner. Specifically, each file must be renamed SAMPLEID_A_R1/R2.fastq.gz. I renamed the data, combined data from different files that corresponded to the same samples, "gzipped" the data to compress them. The data are uploaded to our Google drive and are linked [here](https://drive.google.com/drive/folders/11oXRlcxaQGoKMw_YN8q2bNdR7OS7qkmp?usp=drive_link) in the 'combined_renamed' folder.
 
 ***Download the combined and renamed data files (.fastq.gz) from Google Drive and move it to your /input/samples directory.***
 
