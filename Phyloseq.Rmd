@@ -1,0 +1,96 @@
+# Exploratory Analysis and Visualization of Metabarcoding Data in R Using Phyloseq
+
+Luke McCartin - Postdoc - Lehigh University in the Herrera Lab
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+***Text in bold italics indicates things that you should do on your computer.***
+
+# Background
+## Phyloseq
+
+Phyloseq is a package in R that is convenient for many data analyses of microbiomes and other metabarcoding datasets. The [phyloseq website and tutorial](https://joey711.github.io/phyloseq/) includes more or less every resource you might need to analyze these data; however, coercing your results into a phyloseq object can be a bit challenging. Further, a knowledge of how to use the [tidyverse](https://www.tidyverse.org/) packages, especially [GGPlot2](https://ggplot2.tidyverse.org/), allows you to take advantage of phyloseq to a greater degree.
+
+# Coercing your data into a Phyloseq Object
+
+To analyze your data with phyloseq, three data tables are necessary: 1) an OTU table with the OTUs (clusters from vsearch) and the number of sequencing reads assigned to each OTU; 2) the taxonomic classifications of these OTUs; and 3) a table with your samples and their associated metadata/environmental data.
+
+Optionally, you may also include a phylogenetic tree for analyses of phylogenetic diversity.
+
+To coerce your data into a Phyloseq object, the row and column names of your OTU table must exactly match both the row names in the taxonomic classification table and the row names in your sample data table. This is the biggest hurdle to analyzing data with Phyloseq.
+
+Our task is to load our data into R, and then coerce the data tables into a phyloseq object after re formatting them appropriately.
+
+## Loading data tables from your Natrix2 results into R.
+
+The first two files that we're after are the 1) 'vsearch_table.csv' and the 2) 'vsearch_all_otus.fasta' files in clustering folder.
+
+For this tutorial, we'll identify our OTUs using BLAST. The Natrix2 pipeline includes a module for taxonomic classification. If you use these results, the BLAST hits are present in "blast_taxonomy.tsv".
+
+Alternatively, we can BLAST the sequences using [BLAST on the web](https://blast.ncbi.nlm.nih.gov/Blast.cgi). Simply BLAST the 'vsearch_all_otus.fasta' file using the blastn algorithm, and then download the results in comma-separated values format.
+
+Once you have these results, we can create another table with the taxonomic ranks of these results using some code in R with the packages 'tidyverse' and ['taxonomizr'](https://github.com/sherrillmix/taxonomizr/).
+
+```{r}
+
+library(tidyverse)
+library(taxonomizr)
+
+blast <- read_csv("/Users/callogorgia/Desktop/18S eukaryome/5NFBCRU2016-Alignment-HitTable.csv", col_names = FALSE)
+
+top_blast <- blast %>%
+  group_by(X1) %>%
+  filter(X4 > 350) %>%
+  filter(X3 == max(X3))
+
+prepareDatabase('accessionTaxa.sql')
+
+top_blast$taxid <- accessionToTaxa(top_blast$X2, "accessionTaxa.sql") 
+top_blast$taxonomy <- getTaxonomy(top_blast$taxid, "accessionTaxa.sql") 
+
+taxonomy <- top_blast %>%
+  select(c(X1, taxonomy)) %>%
+  distinct() %>%
+  group_by(X1) %>%
+  summarize(phylum = if(n_distinct(taxonomy[,"phylum"]) == 1){
+    unique(taxonomy[,"phylum"])} else {
+      NA
+    },
+    class = if(n_distinct(taxonomy[,"class"]) == 1){
+      unique(taxonomy[,"class"])} else {
+        NA
+      },
+    order = if(n_distinct(taxonomy[,"order"]) == 1){
+      unique(taxonomy[,"order"])} else {
+        NA
+      },
+    family = if(n_distinct(taxonomy[,"family"]) == 1){
+      unique(taxonomy[,"family"])} else {
+        NA
+      },
+    genus = if(n_distinct(taxonomy[,"genus"]) == 1){
+      unique(taxonomy[,"genus"])} else {
+        NA
+      },
+    species = if(n_distinct(taxonomy[,"species"]) == 1){
+      unique(taxonomy[,"species"])} else {
+        NA
+      })
+  
+write.csv(taxonomy, "blast_taxonomy.csv")
+
+```
+
+The other file we need to pre
+
+Now, we can proceed with creating a phyloseq object from these datasets.
+
+```{r}
+library(phyloseq)
+
+
+```
+
+
