@@ -2,18 +2,20 @@
 
 Luke McCartin - Postdoc - Lehigh University in the Herrera Lab
 
+This RMarkdown takes the outputs of Natrix2 to generate a phyloseq object for analysis of microbiomes/eDNA.
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-***Text in bold italics indicates things that you should do on your computer.***
-
 # Background
 ## Phyloseq
 
-Phyloseq is a package in R that is convenient for many data analyses of microbiomes and other metabarcoding datasets. The [phyloseq website and tutorial](https://joey711.github.io/phyloseq/) includes more or less every resource you might need to analyze these data; however, coercing your results into a phyloseq object can be a bit challenging. Further, a knowledge of how to use the [tidyverse](https://www.tidyverse.org/) packages, especially [GGPlot2](https://ggplot2.tidyverse.org/), allows you to take advantage of phyloseq to a greater degree.
+Phyloseq is a package in R that is convenient for many data analyses of microbiomes and other metabarcoding datasets. The [phyloseq website and tutorial](https://joey711.github.io/phyloseq/) includes more or less every resource you might need to analyze your data; however, getting your results into a phyloseq object can be a bit challenging. In this tutorial, we'll walk through how to do that to get your data analysis up and running.
 
-# Coercing your data into a Phyloseq Object
+A knowledge of how to use the [tidyverse](https://www.tidyverse.org/) packages, especially [GGPlot2](https://ggplot2.tidyverse.org/), allows you to take advantage of phyloseq to a greater extent.
+
+# Creating a Phyloseq Object
 
 To analyze your data with phyloseq, three data tables are necessary: 1) an OTU table with the OTUs (clusters from vsearch) and the number of sequencing reads assigned to each OTU; 2) the taxonomic classifications of these OTUs; and 3) a table with your samples and their associated metadata/environmental data.
 
@@ -21,15 +23,15 @@ Optionally, you may also include a phylogenetic tree for analyses of phylogeneti
 
 To coerce your data into a Phyloseq object, the row and column names of your OTU table must exactly match both the row names in the taxonomic classification table and the row names in your sample data table. This is the biggest hurdle to analyzing data with Phyloseq.
 
-Our task is to load our data into R, and then coerce the data tables into a phyloseq object after re formatting them appropriately.
+Our task is to load our data into R, and then coerce the data tables into a phyloseq object after re-formatting them appropriately.
 
 ## Loading data tables from your Natrix2 results into R.
 
 The first two files that we're after are the 1) 'vsearch_table.csv' and the 2) 'vsearch_all_otus.fasta' files in clustering folder.
 
-For this tutorial, we'll identify our OTUs using BLAST. The Natrix2 pipeline includes a module for taxonomic classification. If you use these results, the BLAST hits are present in "blast_taxonomy.tsv".
+The Natrix2 pipeline includes a module for taxonomic classification that can leverage different reference databases like SILVA. If you use these results, the BLAST hits are present in "blast_taxonomy.tsv".
 
-Alternatively, we can BLAST the sequences using [BLAST on the web](https://blast.ncbi.nlm.nih.gov/Blast.cgi). Simply BLAST the 'vsearch_all_otus.fasta' file using the blastn algorithm, and then download the results in comma-separated values format.
+Alternatively, we can BLAST the sequences against NCBI using [BLAST on the web](https://blast.ncbi.nlm.nih.gov/Blast.cgi). Simply BLAST the 'vsearch_all_otus.fasta' file using the blastn algorithm, and then download the results in comma-separated values format.
 
 Once you have these results, we can create another table with the taxonomic ranks of these results using some code in R with the packages 'tidyverse' and ['taxonomizr'](https://github.com/sherrillmix/taxonomizr/).
 
@@ -83,14 +85,88 @@ write.csv(taxonomy, "blast_taxonomy.csv")
 
 ```
 
-The other file we need to pre
+The other file we need to prepare is a sample data table. This is a straitforward comma-delimited text file that must include the names of the samples as they appear in the 'vsearch_table.csv' file.
 
-Now, we can proceed with creating a phyloseq object from these datasets.
+For now, I've only included the sample names and species in these files. More information can be added as new columns for each sample, either by editing the .csv file or in R afterwards.
+
+I made my sample data table in VSCode, and it looks like this:
+
+Sample,Species
+barcode81_A,Gorgonia ventalina
+barcode82_A,Gorgonia ventalina
+barcode83_A,Porites astreoides
+barcode84_A,Porites astreoides
+barcode85_A,Muricea pendula
+barcode86_A,Muricea pendula
+barcode87_A,NTC one
+barcode88_A,NTC two
+
+Now, we can proceed with creating a phyloseq object from these separate data tables, paying close mind to their row names.
 
 ```{r}
-library(phyloseq)
 
+library(phyloseq)
+library(tidyverse)
+
+sam_data <- read_csv("/Users/callogorgia/Desktop/18S eukaryome/sample_data.csv")
+
+otu_tab <- read_csv("/Users/callogorgia/Desktop/18S eukaryome/vsearch_table.csv")
+
+tax <- read_csv("/Users/callogorgia/Desktop/18S eukaryome/blast_taxonomy.csv")
 
 ```
 
+You'll notice that seqid in the otu_table and X1 in the taxonomy table do not match... that is a problem. We can fix this by editing the names in the otu table and taxonomy table.
 
+```{r}
+
+tax.renamed <- tax %>%
+  mutate(seqid = str_replace_all(X1, ";.+", ""))
+
+otu_tab.renamed <- otu_tab %>%
+  mutate(seqid = str_replace_all(seqid, "(N)(.+)(_.+)", "\\2"))
+
+row.names(otu_tab.renamed) <- otu_tab.renamed$seqid
+
+```
+
+Now that these are renamed, we can make them row.names and create a phyloseq object.
+
+```{r}
+
+row.names(tax.renamed) <- tax.renamed$seqid
+tax.matrix <- as.matrix(tax.renamed)[,-c(1,2,9)]
+tax_ps <- tax_table(tax.matrix)
+
+otu_tab.matrix <- as.matrix(otu_tab.renamed[,-c(1,2)])
+row.names(otu_tab.matrix) <- otu_tab.renamed$seqid
+
+otu_ps <- otu_table(otu_tab.matrix, taxa_are_rows = TRUE)
+
+sam_data <- sample_data(sam_data)
+row.names(sam_data) <- sam_data$Sample
+
+ps <- phyloseq(otu_ps, tax_ps, sam_data)
+
+```
+
+Great, now we've created the phyloseq object. To make sure that everything is working correctly, make some basic bar plots.
+
+```{r}
+
+plot_bar(ps, x = "Sample", fill = "class")
+
+# removing animals
+
+ps_microbes <- subset_taxa(ps, !phylum %in% c("Cnidaria", "Porifera", "Mollusca"))
+
+plot_bar(ps_microbes, x = "Sample", fill = "class")
+
+
+ps_microbes_proportions <- transform_sample_counts(ps_microbes, function(x) x / sum(x))
+
+plot_bar(ps_microbes_proportions, x = "Sample", fill = "class")
+
+```
+
+Things seem to be working as intended! There are already some interesting taxa in these samples!
