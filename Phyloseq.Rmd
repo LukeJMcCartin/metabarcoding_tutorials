@@ -35,7 +35,7 @@ Alternatively, we can BLAST the sequences against NCBI using [BLAST on the web](
 
 Once you have these results, we can create another table with the taxonomic ranks of these results using some code in R with the packages 'tidyverse' and ['taxonomizr'](https://github.com/sherrillmix/taxonomizr/).
 
-```{r}
+```{r, eval = FALSE}
 
 library(tidyverse)
 library(taxonomizr)
