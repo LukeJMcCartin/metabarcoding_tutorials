@@ -222,6 +222,7 @@ classify:
         search: kmer # Allows you to specify the method to find most similar template. Your options are: suffix, kmer, blast, align and distance. The default is kmer
         method: wang # Allows you to specify classification method to use. Your options are: wang, knn and zap. The default is wang.
         database: pr2 # Database against which MOTHUR should be carried out, at the moment "pr2" , "unite" and "silva" are supported
+        cutoff: 0.8 # this isn't used but has to be included or else the pipeline will not run
 database_version:
         pr2: 4.14.0
         silva: 138.1
