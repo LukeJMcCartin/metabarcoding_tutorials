@@ -150,8 +150,9 @@ taxonomy <- classifications.df %>%
   spread(key = "rank", value = "name") %>%
   right_join(taxid_accid, by = c("query" = "V2")) %>%
   right_join(top_blast, by = c("V1" = "acc_id")) %>%
-  select(c(X1, query, class, domain, family, genus, order)) %>%
-  distinct()
+  select(c(X1, X2, X3, query, class, domain, family, genus, order))
+
+write.csv(taxonomy, "~/Desktop/taxonomy.csv")
 
 ```
 
