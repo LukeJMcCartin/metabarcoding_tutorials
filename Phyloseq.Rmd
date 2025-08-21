@@ -52,53 +52,7 @@ write.csv(top_blast, "top_blast_hits.csv", row.names = FALSE, quotes = FALSE) # 
 
 Now we have a table of the top BLAST hits for each OTU. 
 
-We can get the taxonomy for each of these BLAST hits in a couple of different ways.
-
-First, in R using taxonomizr.
-
-```{r, eval = FALSE}
-
-library(taxonomizr)
-
-prepareDatabase('accessionTaxa.sql')
-
-top_blast$taxid <- accessionToTaxa(top_blast$X2, "accessionTaxa.sql") 
-top_blast$taxonomy <- getTaxonomy(top_blast$taxid, "accessionTaxa.sql") 
-
-taxonomy <- top_blast %>%
-  select(c(X1, taxonomy)) %>%
-  distinct() %>%
-  group_by(X1) %>%
-  summarize(phylum = if(n_distinct(taxonomy[,"phylum"]) == 1){
-    unique(taxonomy[,"phylum"])} else {
-      NA
-    },
-    class = if(n_distinct(taxonomy[,"class"]) == 1){
-      unique(taxonomy[,"class"])} else {
-        NA
-      },
-    order = if(n_distinct(taxonomy[,"order"]) == 1){
-      unique(taxonomy[,"order"])} else {
-        NA
-      },
-    family = if(n_distinct(taxonomy[,"family"]) == 1){
-      unique(taxonomy[,"family"])} else {
-        NA
-      },
-    genus = if(n_distinct(taxonomy[,"genus"]) == 1){
-      unique(taxonomy[,"genus"])} else {
-        NA
-      },
-    species = if(n_distinct(taxonomy[,"species"]) == 1){
-      unique(taxonomy[,"species"])} else {
-        NA
-      })
-  
-write.csv(taxonomy, "blast_taxonomy.csv")
-
-```
-
-We can also do this in bash, using entrez tools. This is advantageous to the taxonomizr version, since it uses far less hard drive space.
+We can get the taxonomy for most of these accession IDs using entrez tools in bash.
 
 It is necessary to create a conda environment that contains the entrez tools.
 
@@ -140,7 +94,7 @@ classifications <- classification(taxids, db = 'ncbi')
 
 classifications.df <- classifications %>% 
   rbind() %>%
-  filter(rank %in% c("domain", "class", "order", "family", "genus"))
+  filter(rank %in% c("domain", "phylum", "class", "order", "family", "genus"))
 
 top_blast$acc_id <- str_replace_all(top_blast$X2, "\\.1", "")
 
@@ -150,7 +104,7 @@ taxonomy <- classifications.df %>%
   spread(key = "rank", value = "name") %>%
   right_join(taxid_accid, by = c("query" = "V2")) %>%
   right_join(top_blast, by = c("V1" = "acc_id")) %>%
-  select(c(X1, X2, X3, query, class, domain, family, genus, order))
+  select(c(X1, X2, X3, query, class, domain, phylum, family, genus, order))
 
 write.csv(taxonomy, "~/Desktop/taxonomy.csv")
 
