@@ -137,7 +137,7 @@ sam_data <- read_csv("/Users/callogorgia/Desktop/18S eukaryome/sample_data.csv")
 
 otu_tab <- read_csv("/Users/callogorgia/Desktop/18S eukaryome/vsearch_table.csv")
 
-tax <- read_csv("/Users/callogorgia/Desktop/18S eukaryome/blast_taxonomy.csv")
+tax <- read_csv("/Users/callogorgia/Desktop/18S eukaryome/BLAST Taxonomy - Sheet1.csv")
 
 ```
 
@@ -145,8 +145,18 @@ You'll notice that seqid in the otu_table and X1 in the taxonomy table do not ma
 
 ```{r}
 
+tax.collapsed <- tax %>%
+  select(OTU, Domain, Phylum, Class, Order, Family, Genus) %>%
+  group_by(OTU) %>%
+  summarise(Domain = paste(unique(Domain), collapse = "|"),
+            Phylum = paste(unique(Phylum), collapse = "|"),
+            Class = paste(unique(Class), collapse = "|"),
+            Order = paste(unique(Order), collapse = "|"),
+            Family = paste(unique(Family), collapse = "|"),
+            Genus = paste(unique(Genus), collapse = "|"))
+
 tax.renamed <- tax %>%
-  mutate(seqid = str_replace_all(X1, ";.+", ""))
+  mutate(seqid = str_replace_all(OTU, ";.+", ""))
 
 otu_tab.renamed <- otu_tab %>%
   mutate(seqid = str_replace_all(seqid, "(N)(.+)(_.+)", "\\2"))
@@ -160,7 +170,8 @@ Now that these are renamed, we can make them row.names and create a phyloseq obj
 ```{r}
 
 row.names(tax.renamed) <- tax.renamed$seqid
-tax.matrix <- as.matrix(tax.renamed)[,-c(1,2,9)]
+tax.matrix <- as.matrix(tax.renamed)[,-c(1,8)]
+
 tax_ps <- tax_table(tax.matrix)
 
 otu_tab.matrix <- as.matrix(otu_tab.renamed[,-c(1,2)])
@@ -179,18 +190,18 @@ Great, now we've created the phyloseq object. To make sure that everything is wo
 
 ```{r}
 
-plot_bar(ps, x = "Sample", fill = "class")
+plot_bar(ps, x = "Sample", fill = "Class")
 
 # removing animals
 
 ps_microbes <- subset_taxa(ps, !phylum %in% c("Cnidaria", "Porifera", "Mollusca"))
 
-plot_bar(ps_microbes, x = "Sample", fill = "class")
+plot_bar(ps_microbes, x = "Sample", fill = "Class")
 
 
 ps_microbes_proportions <- transform_sample_counts(ps_microbes, function(x) x / sum(x))
 
-plot_bar(ps_microbes_proportions, x = "Sample", fill = "class")
+plot_bar(ps_microbes_proportions, x = "Sample", fill = "Class")
 
 ```
 
