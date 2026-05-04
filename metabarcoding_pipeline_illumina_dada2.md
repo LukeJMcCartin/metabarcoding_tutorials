@@ -1,5 +1,3 @@
-<img width="471" height="105" alt="image" src="https://github.com/user-attachments/assets/1e8f8dba-8e50-48eb-9e3c-a7d35602dd80" /># Analyzing DNA Metabarcoding Data Generated using Illumina Sequencing Data with DADA2
-
 Luke McCartin - Postdoc - Smithsonian National Museum of Natural History
 
 ***Text in bold italics indicates things that you should do on your computer.***
