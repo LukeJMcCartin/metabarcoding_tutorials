@@ -17,11 +17,11 @@ Bioinformatic analysis of the resulting sequence data files involves 1) trimming
 
 In this tutorial, we are focused on analyzing data generated from ARMS and eDNA samples that were amplified using the 12S MiFish Universal primers (Miya, et al. 2015). The primer sequences are Forward: GTCGGTAAAACTCGTGCCAGC and Reverse: CATAGTGGGGTATCTAATCCCAGTTTG. The sequences are written in the 5’ to 3’ directions.
 
-The data from each sample included in the sequencing run were already demultiplexed into separate .fastq files on the Illumina instrument. The exact sequencing instrument used was an Illumina MiSeq, and the MiSeq reagent kit V3 was used for sequencing. Pairing this instrument and kit enabled paired-end sequencing with 300 base pair sequence lengths in both the forward and reverse direction. Thus, in this project we have two ‘gzipped’ (a type of file compression) .fastq files for each sample, one corresponding to the forward direction (filenames end in ‘R1_001.fastq.gz’) and another corresponding to the reverse direction (filenames end in ‘R2_001.fastq.gz’). 
+The data from each sample included in the sequencing run were already demultiplexed into separate .fastq files on the Illumina instrument. The exact sequencing instrument used was an Illumina MiSeq, and the MiSeq Nano kit with paired-end 150 bp reads was used for sequencing. Pairing this instrument and kit enabled paired-end sequencing with 150 base pair sequence lengths in both the forward and reverse direction. Thus, in this project we have two ‘gzipped’ (a type of file compression) .fastq files for each sample, one corresponding to the forward direction (filenames end in ‘R1_001.fastq.gz’) and another corresponding to the reverse direction (filenames end in ‘R2_001.fastq.gz’). 
 
 ## Installing R, RStudio, and Conda
 
-To use this tutorial, we'll need to first install R, RStudio, and conda on your computer. 
+To use this tutorial, you'll need to first install R, RStudio, and conda on your computer. 
 
 Conda is a software management tool that allows you to build multiple software "environments" on your computer. Software for bioinformatics programs, including those used in the Natrix2 pipeline, tend to have a lot of "dependencies". Dependencies are simply other software (like Python modules for example) that a software relies on. Conda ensures that the programs you install to complete a task are compatible with one another in terms of their versions. In this way, conda is an indispensible tool for bioinformatics.
 
