@@ -123,6 +123,11 @@ First, we’ll do some error filtering and quality control using the DADA2 funct
 
 library(dada2)
 
+fnFs <- list.files("./trimmed_seqs", pattern="_R1_001.fastq.gz", full.names=TRUE) #listing and define the fastq.gz files with trimmed, forward reads
+
+fnRs <- list.files("./trimmed_seqs", pattern="_R2_001.fastq.gz", full.names=TRUE) #listing and define the fastq.gz files with trimmed, reverse reads
+head(fnFs)
+
 plotQualityProfile(fnFs[c(1)]) # plotting quality of forward reads
 
 plotQualityProfile(fnRs[c(1)]) # plotting quality of reverse reads
