@@ -109,9 +109,13 @@ Start a new R “project” in an existing working directory by clicking “File
 
 Using an R project sets your working directory, so that you don’t have to manually change it, and allows you to save your work while switching between projects.
 
-***Create a new RScript by clicking “File” > “New File” > “R Script”.***
+Before you get started you'll need to install DADA2.
 
-***Use the template code below to create a DADA2 script and process your data to denoise amplicon sequence variants.*** 
+***Follow the instructions on [the DADA2 website](https://benjjneb.github.io/dada2/dada-installation.html) to install DADA2 on your computer.***
+
+This code is modified from [the DADA2 tutorial](https://benjjneb.github.io/dada2/tutorial.html). You'll create your own code from my template to quality filter the primer-trimmed data and to denoise amplicon sequence variants.
+
+***Create a new RScript in RStudio to process your data using the following code.***
 
 First, we’ll do some error filtering and quality control using the DADA2 function filterAndTrim.
 
