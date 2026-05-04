@@ -80,17 +80,17 @@ mkdir ./trimmed_seqs
 
 conda activate cutadapt
 
-for sample in ./YOUR_WORKING_DIRECTORY_WITH_SEQUENCES/*_S*_R1_001.fastq.gz; do
-  SAMPLE=$(echo ${sample} | sed "s/.\/YOUR_WORKING_DIRECTORY_WITH_SEQUENCES\///" | sed "s/_R1_\001\.fastq.gz//")
+for sample in ./YOUR_WORKING_DIRECTORY_WITH_SEQUENCES/*_S*_L001_R1_001.fastq.gz; do
+  SAMPLE=$(echo ${sample} | sed "s/.\/YOUR_WORKING_DIRECTORY_WITH_SEQUENCES\///" | sed "s/_L001_R1_\001\.fastq.gz//")
   echo $SAMPLE
   cutadapt \
   -a "^FPRIMER;required...RPRIMER_RC;optional" \
   -A "^RPRIMER;required...FPRIMER_RC;optional" \
   --discard-untrimmed --pair-filter=any \
-  -o ./trimmed_seqs/primers-trimmed-${SAMPLE}_R1_001.fastq.gz \
-  -p ./trimmed_seqs/primers-trimmed-${SAMPLE}_R2_001.fastq.gz \
-  ./YOUR_WORKING_DIRECTORY_WITH_SEQUENCES/${SAMPLE}_R1_001.fastq.gz \
-  ./YOUR_WORKING_DIRECTORY_WITH_SEQUENCES/${SAMPLE}_R2_001.fastq.gz
+  -o ./trimmed_seqs/primers-trimmed-${SAMPLE}_L001_R1_001.fastq.gz \
+  -p ./trimmed_seqs/primers-trimmed-${SAMPLE}_L001_R2_001.fastq.gz \
+  ./YOUR_WORKING_DIRECTORY_WITH_SEQUENCES/${SAMPLE}_L001_R1_001.fastq.gz \
+  ./YOUR_WORKING_DIRECTORY_WITH_SEQUENCES/${SAMPLE}_L001_R2_001.fastq.gz
 done
 
 conda deactivate
