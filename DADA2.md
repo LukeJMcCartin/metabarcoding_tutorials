@@ -123,10 +123,6 @@ First, we’ll do some error filtering and quality control using the DADA2 funct
 
 library(dada2)
 
-fnFs <- list.files("./trimmed_seqs", pattern="_R1_001.fastq.gz", full.names=TRUE) # listing and defining the fastq.gz files with trimmed, forward reads
-
-fnRs <- list.files("./trimmed_seqs", pattern="_R2_001.fastq.gz", full.names=TRUE) # listing and defining the fastq.gz files with trimmed, reverse reads
-
 plotQualityProfile(fnFs[c(1)]) # plotting quality of forward reads
 
 plotQualityProfile(fnRs[c(1)]) # plotting quality of reverse reads
@@ -160,6 +156,13 @@ out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen = c(NNN, NNN), truncQ 
 Next, we’ll generate 1) a list of amplicon sequence variants (ASVs) and 2) a table with the number of sequencing reads assigned to each ASV across the samples in the dataset.
 
 ```r
+
+# re-defining file paths after filtering
+
+filt_fnFs <- list.files("./filtered", pattern="_R1_001.fastq.gz", full.names=TRUE)
+filt_fnRs <- list.files("./filtered", pattern="_R2_001.fastq.gz", full.names=TRUE)
+filtFs <- file.path("./filtered", basename(filt_fnFs))
+filtRs <- file.path("./filtered", basename(filt_fnRs))
 
 #learning the error models for these data
 errF <- learnErrors(filtFs, nbases=1e6, multi=TRUE, verbose = TRUE)
